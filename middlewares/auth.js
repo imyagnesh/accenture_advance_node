@@ -8,7 +8,7 @@ const auth = (req, res, next) => {
     return res.status(401).send({ message: "you are not valid user" });
 
   try {
-    const decode = jwt.verify(token, config.get("jwtPrivateKey"));
+    const decode = jwt.verify(token, config.get("jwtKey"));
 
     next();
     // req.user = decoded;

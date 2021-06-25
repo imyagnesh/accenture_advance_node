@@ -25,9 +25,9 @@ const validateUser = async (req, res) => {
 
     const { password, ...resData } = user.toObject();
 
-    console.log(config.get("jwtPrivateKey"));
+    console.log(config.get("jwtKey"));
 
-    const token = jwt.sign(resData, config.get("jwtPrivateKey"), {
+    const token = jwt.sign(resData, config.get("jwtKey"), {
       expiresIn: "24h",
     });
 
