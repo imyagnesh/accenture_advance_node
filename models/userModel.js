@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
     min: 8,
     max: 1024,
   },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const validateUser = (user) => {
@@ -32,7 +36,8 @@ const validateUser = (user) => {
       .required()
       .email()
       .label("email address"),
-    password: passwordComplexity(complexityOptions),
+    password: passwordComplexity,
+    isAdmin: Joi.boolean(),
   });
 
   return schema.validate(user);

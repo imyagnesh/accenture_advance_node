@@ -71,8 +71,22 @@ const changePassword = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const { id } = req.params;
-  } catch (error) {}
+    const { _id } = req.user;
+    await userModel.deleteOne({ _id });
+    res.status(201).send({ message: "user deleted Successfully" });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+const getMe = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const user = await userModel.findOne({ _id }, "-password");
+    res.status(200).send(user);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 };
 
 module.exports = {
@@ -82,4 +96,5 @@ module.exports = {
   updateUser,
   deleteUser,
   changePassword,
+  getMe,
 };

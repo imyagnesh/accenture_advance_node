@@ -9,6 +9,8 @@ const auth = (req, res, next) => {
 
   try {
     const decode = jwt.verify(token, config.get("jwtKey"));
+    console.log(decode);
+    req.user = decode;
 
     next();
     // req.user = decoded;
