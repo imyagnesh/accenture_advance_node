@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
+const cors = require("cors");
 const user = require("./routes/userRoute");
 const auth = require("./routes/authRoute");
 
@@ -16,6 +17,14 @@ mongoose
   .catch((err) => {
     console.log("fail to connect", err);
   });
+
+const allowedOrigins = ["http://localhost:8080"];
+
+const options = {
+  origin: allowedOrigins,
+};
+
+app.use(cors(options));
 
 app.use(express.json());
 
