@@ -4,38 +4,52 @@ const { validateCart, cartModel } = require("../models/cartModel");
 const { productModel } = require("../models/productModel");
 
 Fawn.init(mongoose);
-// const task = Fawn.Task();
+const task = Fawn.Task();
 
 const addToCart = async (req, res) => {
   try {
     const { _id: userId } = req.user;
-    const { productId, quantity } = req.body;
+
+    const { productId, quantity, cartId } = req.body;
 
     const product = await productModel.findOne({ _id: productId });
 
-    if (product && product.quantity >= quantity) {
+    if (cartId) {
+      if (quantity === 0) {
+        task.remove("Cart", { _id: cartId });
+      } else {
+        task.update(
+          "Cart",
+          { _id: cartId },
+          {
+            $inc: {
+              quantity: quantity,
+            },
+          }
+        );
+      }
+    } else {
       const cartDetails = new cartModel({
         userId,
         productId,
         quantity,
         price: product.price,
       });
-
-      await new Fawn.Task()
-        .update(
-          "Product",
-          { _id: productId },
-          {
-            $set: { quantity: product.quantity - quantity },
-          }
-        )
-        .save("Cart", cartDetails)
-        .run({ useMongoose: true });
-
-      return res.status(201).send(cartDetails);
-    } else {
-      return res.status(400).send({ message: "product is not available" });
+      task.save("Cart", cartDetails);
     }
+
+    task.update(
+      "Product",
+      { _id: productId },
+      {
+        $inc: {
+          quantity: quantity * -1,
+        },
+      }
+    );
+
+    let results = await task.run({ useMongoose: true });
+    res.status(201).send(results);
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
