@@ -14,7 +14,13 @@ const addToCart = async (req, res) => {
     const product = await productModel.findOne({ _id: productId });
 
     if (product && product.quantity >= quantity) {
-      console.log(product.quantity - quantity);
+      const cartDetails = new cartModel({
+        userId,
+        productId,
+        quantity,
+        price: product.price,
+      });
+
       await new Fawn.Task()
         .update(
           "Product",
@@ -23,12 +29,10 @@ const addToCart = async (req, res) => {
             $set: { quantity: product.quantity - quantity },
           }
         )
-        .save(
-          "Cart",
-          new cartModel({ userId, productId, quantity, price: product.price })
-        )
+        .save("Cart", cartDetails)
         .run({ useMongoose: true });
-      return res.status(201).send("successfully added into cart");
+
+      return res.status(201).send(cartDetails);
     } else {
       return res.status(400).send({ message: "product is not available" });
     }
@@ -37,4 +41,14 @@ const addToCart = async (req, res) => {
   }
 };
 
-module.exports = { addToCart };
+const getCart = async (req, res) => {
+  try {
+    const { _id: userId } = req.user;
+    const cartDetails = await cartModel.find({ userId });
+    res.status(200).send(cartDetails);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+module.exports = { addToCart, getCart };

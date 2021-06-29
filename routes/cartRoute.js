@@ -6,4 +6,6 @@ const admin = require("../middlewares/admin");
 
 router.post("/", [auth, admin], cartController.addToCart);
 
+router.get("/", [auth], cartController.getCart);
+
 module.exports = router;
