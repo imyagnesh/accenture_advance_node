@@ -8,21 +8,23 @@ const product = require("./routes/productRoute");
 const cart = require("./routes/cartRoute");
 const Fawn = require("fawn");
 
-mongoose
-  .connect(
-    "mongodb+srv://imyagnesh:Password1!@cluster0.gq39f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    {
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
-      useCreateIndex: true,
-    }
-  )
-  .then((res) => {
+const connect = async () => {
+  try {
+    await mongoose.connect(
+      "mongodb+srv://imyagnesh:Password1!@cluster0.gq39f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+      {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+        useCreateIndex: true,
+      }
+    );
     console.log("database started successfully");
-  })
-  .catch((err) => {
-    console.log("fail to connect", err);
-  });
+  } catch (error) {
+    console.log("fail to connect", error);
+  }
+};
+
+connect();
 
 // const allowedOrigins = [
 //   "http://localhost:8080",
