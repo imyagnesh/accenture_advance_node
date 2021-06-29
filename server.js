@@ -9,11 +9,14 @@ const cart = require("./routes/cartRoute");
 const Fawn = require("fawn");
 
 mongoose
-  .connect("mongodb+srv://imyagnesh:Password1!@cluster0.gq39f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useCreateIndex: true,
-  })
+  .connect(
+    "mongodb+srv://imyagnesh:Password1!@cluster0.gq39f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+      useCreateIndex: true,
+    }
+  )
   .then((res) => {
     console.log("database started successfully");
   })
@@ -44,6 +47,8 @@ app.get("/", function (req, res) {
   res.send("Hello World");
 });
 
-app.listen(3000, () => {
-  console.log("3000 port is ready");
+var port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`${port} port is ready`);
 });
