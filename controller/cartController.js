@@ -65,4 +65,17 @@ const getCart = async (req, res) => {
   }
 };
 
-module.exports = { addToCart, getCart };
+const deleteCart = async (req, res) => {
+  try {
+    const { _id: userId } = req.user;
+    const cartDetails = await cartModel.deleteMany({ userId });
+    res.status(200).send(cartDetails);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+// 1. create delete cart method
+
+// 2. export created Function
+module.exports = { addToCart, getCart, deleteCart };

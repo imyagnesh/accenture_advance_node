@@ -9,7 +9,7 @@ const cart = require("./routes/cartRoute");
 const Fawn = require("fawn");
 
 mongoose
-  .connect("mongodb://localhost/accenture_node", {
+  .connect("mongodb+srv://imyagnesh:Password1!@cluster0.gq39f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -21,16 +21,17 @@ mongoose
     console.log("fail to connect", err);
   });
 
-const allowedOrigins = [
-  "http://localhost:8080",
-  "https://7277c2e205c2.ngrok.io",
-];
+// const allowedOrigins = [
+//   "http://localhost:8080",
+//   "https://7277c2e205c2.ngrok.io",
+//   "https://accenture-shopping-cart-rd5f7nm4q-coder4affine.vercel.app/",
+// ];
 
-const options = {
-  origin: allowedOrigins,
-};
+// const options = {
+//   origin: "*",
+// };
 
-app.use(cors(options));
+app.use(cors());
 
 app.use(express.json());
 

@@ -8,4 +8,6 @@ router.post("/", [auth, admin], cartController.addToCart);
 
 router.get("/", [auth], cartController.getCart);
 
+router.delete("/", [auth, admin], cartController.deleteCart);
+
 module.exports = router;
