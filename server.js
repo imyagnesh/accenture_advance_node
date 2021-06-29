@@ -15,7 +15,6 @@ const connect = async () => {
       {
         useUnifiedTopology: true,
         useNewUrlParser: true,
-        useCreateIndex: true,
       }
     );
     console.log("database started successfully");
